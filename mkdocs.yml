@@ -1,0 +1,8 @@
+site_name: laiye 母婴智能问答系统部署文档
+theme: readthedocs
+pages:
+- 运行环境:          Platform.md
+- 准备和基础服务:     BasicServices.md
+- opensearch:       opensearch.md
+- 知识库和管理平台CRM: CRM.md
+- 问答服务:           QuestionServices.md
