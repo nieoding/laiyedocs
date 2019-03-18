@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>知识库和管理平台CRM - laiye 母婴智能问答系统部署文档</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u77e5\u8bc6\u5e93\u548c\u7ba1\u7406\u5e73\u53f0CRM";
+    var mkdocs_page_input_path = "CRM.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> laiye 母婴智能问答系统部署文档</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Platform/">运行环境</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../BasicServices/">准备和基础服务</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../opensearch/">opensearch</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">知识库和管理平台CRM</a>
+    <ul class="subnav">
+            
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../QuestionServices/">问答服务</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">laiye 母婴智能问答系统部署文档</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>知识库和管理平台CRM</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>CRM目录在<code>/home/works/apps/crm-jingli/online</code></p>
+<ul>
+<li>安装依赖</li>
+</ul>
+<pre><code class="bash">cd /home/works/apps/crm-jingli/online
+cnpm install &amp;&amp; yarn install
+npm install -g pm2
+</code></pre>
+
+<ul>
+<li>配置</li>
+</ul>
+<pre><code class="js"># config/private/mysql.config.js   配置mysql
+...
+production: {
+    host: 'lizcloud4c.chnh6yhldzwc.rds.cn-north-1.amazonaws.com.cn',
+    port: 3306,
+    user: 'root',
+    password: 'Rg3UrelC',
+    supportBigNumbers: true
+}
+
+production: {
+    host: 'rm-uf62bx6y83t6yws19mo.mysql.rds.aliyuncs.com',
+    port: 3306,
+    user: 'gemii_root',
+    password: 'gemii!@123',
+    supportBigNumbers: true
+}
+...
+
+rm-uf62bx6y83t6yws19mo.mysql.rds.aliyuncs.com
+# config/private/redis.config.js     配置redis
+...
+production: {
+    retry_strategy: retryStrategy,
+    db: '3',
+    host: '127.0.0.1',
+    port: 6379
+}
+...
+
+# config/public/htmlPage href
+...
+links: [
+    // { rel: 'dns-prefetch', href: 'https://at.alicdn.com' },
+    // { rel: 'dns-prefetch', href: '//jingli.laiye.com' },
+    // { rel: 'dns-prefetch', href: '//s1.laiye.com' },
+    // { rel: 'dns-prefetch', href: '//s3.laiye.com' }
+    // 将href替换成可访问的ip或域名
+    { rel: 'dns-prefetch', href: '//pubcontent.gemii.cc/'},
+    { rel: 'dns-prefetch', href: '//pubcontent.gemii.cc/'},
+    { rel: 'dns-prefetch', href: '//pubcontent.gemii.cc/'},
+    { rel: 'dns-prefetch', href: '//pubcontent.gemii.cc/'}
+],
+...
+
+# .env.production          配置web服务域名
+...
+SERVER_API=http://pubcontent.gemii.cc/
+...
+
+# src/server/utils/aliyun.opensearch.utl.js     配置opensearch
+...
+const host = `opensearch-cn-shanghai.aliyuncs.com`
+const accessSecret = 'x1VjJtlEJRNTkz1QbA7Z8ieDWJkUOX&amp;' // 这里要注意'&amp;'
+const AccessKeyId = 'LTAIZ0kZiSmtZRA3'
+...
+</code></pre>
+
+<blockquote>
+<p>注意 opensearch accessSecret 最后需要加个'&amp;'字符</p>
+</blockquote>
+<ul>
+<li>重新构建</li>
+</ul>
+<p>修改配置文件</p>
+<pre><code class="js"># package.json
+  ...
+  &quot;lint-staged&quot;: {
+    &quot;src/**/*.js&quot;: [
+      &quot;prettier-eslint --write&quot;,
+      // &quot;eslint --max-warnings 10&quot;,    // 删除此行
+      &quot;git add&quot;
+    ]
+  }
+  ...
+    &quot;build:prod&quot;: {
+        // &quot;command&quot;: &quot;npm run lint &amp;&amp; npm run clean &amp;&amp; babel-node tools/scripts/build&quot;,   // 修改成
+        &quot;command&quot;: &quot;npm run clean &amp;&amp; babel-node tools/scripts/build&quot;,
+        &quot;env&quot;: {
+            &quot;NODE_ENV&quot;: &quot;production&quot;,
+            &quot;MODE&quot;: &quot;prod&quot;
+        }
+    }
+  ...
+</code></pre>
+
+<p>备份之前的编译生成的文件</p>
+<pre><code class="bash">mv build build.bak
+mv static/jingli-crm/assets static/jingli-crm/assets.bak
+</code></pre>
+
+<p>重编</p>
+<pre><code class="bash">npm run build:prod
+</code></pre>
+
+<ul>
+<li>CRM前端配置</li>
+</ul>
+<p>sed 替换生成前端文件的静态文件引用地址:</p>
+<pre><code class="bash">cd static/crm-jingli/assets/
+sed -i.bak 's/s[0,1].laiye.com/pubcontent.gemii.cc/g' ./*
+</code></pre>
+
+<p>若修改有误可以将所有bak文件批量还原</p>
+<pre><code class="bash">find static/crm-jingli/assets/ -name '*.bak' -print0 | xargs -0 -I {} echo mv -f '{}' '{}' | sed 's/\.bak$//' | bash
+</code></pre>
+
+<ul>
+<li>启动CRM后端服务</li>
+</ul>
+<pre><code class="bash"># 之前有进程注册 先清除
+pm2 stop all
+pm2 delete all
+
+# 使用pm2启动4个服务
+pm2 start pord.json
+pm2 status
+</code></pre>
+
+<p>&lt;图&gt;</p>
+<p>服务端口分别为
+8332 8333</p>
+<ul>
+<li>nginx代理配置 CRM</li>
+</ul>
+<p><code>/etc/nginx/nginx.conf</code></p>
+<pre><code class="conf">http {
+    ...
+    upstream jingli_online {
+        server 127.0.0.1:8332;
+        server 127.0.0.1:8333;
+    }
+    ...
+    server {
+        ...
+        # node.js crm
+        location / {
+                proxy_pass http://jingli_online;
+        }
+        # static
+        location ~ \/static\/.*\.(js|css|ico|jpg|png|gif|eot|svg|ttf|woff|woff2|map|html) {
+                root /home/works/apps/crm-jingli/online/;
+                expires 7d;
+                access_log off;
+        }
+        ...
+    }
+    ...
+}
+</code></pre>
+
+<ul>
+<li>将works目录赋予nginx用户访问权限</li>
+</ul>
+<pre><code class="bash">sudo usermod nginx -aG works      # nginx用户加入works group
+sudo chmod 750 /home/works        # 赋予works目录works group的rx权限
+</code></pre>
+
+<p>systemctl start nginx
+systemctl enable nginx</p>
+<p>登录地址:
+http://pubcontent.gemii.cc</p>
+<p>登录账号:
+jingli_laiye
+jingli@demo</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../QuestionServices/" class="btn btn-neutral float-right" title="问答服务">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../opensearch/" class="btn btn-neutral" title="opensearch"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../opensearch/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../QuestionServices/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

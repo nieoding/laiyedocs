@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>准备和基础服务 - laiye 母婴智能问答系统部署文档</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u51c6\u5907\u548c\u57fa\u7840\u670d\u52a1";
+    var mkdocs_page_input_path = "BasicServices.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> laiye 母婴智能问答系统部署文档</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Platform/">运行环境</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">准备和基础服务</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#redis">redis配置</a></li>
+    
+
+    <li class="toctree-l2"><a href="#nginx">nginx</a></li>
+    
+
+    <li class="toctree-l2"><a href="#works">创建works用户</a></li>
+    
+
+    <li class="toctree-l2"><a href="#nvm">nvm</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_1">拷贝线上服务的所有文件到当前部署的主机</a></li>
+    
+
+    <li class="toctree-l2"><a href="#nodejs-yarn">nodejs &amp; yarn</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_2">数据库迁移</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../opensearch/">opensearch</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../CRM/">知识库和管理平台CRM</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../QuestionServices/">问答服务</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">laiye 母婴智能问答系统部署文档</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>准备和基础服务</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>以root账号登陆 安装基础服务</p>
+<pre><code class="bash">yum install -y epel-release
+yum install –y wget lrzsz nginx redis
+yum install –y mysql/mariadb          # 安装数据库客户端
+(yum –y install mysql-server)         # 使用本地数据库另外安装mysql服务端
+</code></pre>
+
+<p>关闭防火墙</p>
+<pre><code class="bash">setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=disabled/' /etc/selinux/config
+systemctl stop firewalld
+</code></pre>
+
+<h1 id="redis">redis配置</h1>
+<pre><code class="conf"># /etc/redis.conf
+daemonize yes
+save &quot;&quot;
+bind 127.0.0.1
+</code></pre>
+
+<p>开启自启动</p>
+<pre><code class="bash">systemctl start redis
+systemctl enable redis
+</code></pre>
+
+<h1 id="nginx">nginx</h1>
+<p>等后续各服务配置好再配置</p>
+<h1 id="works">创建works用户</h1>
+<pre><code class="bash">useradd -m works
+cd /home/works &amp;&amp; su works
+</code></pre>
+
+<p>之后的应用服务必须放在/home/works下 否则需要从代码中修改路径</p>
+<h1 id="nvm">nvm</h1>
+<pre><code class="bash">wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash
+</code></pre>
+
+<h1 id="_1">拷贝线上服务的所有文件到当前部署的主机</h1>
+<p>(/home/works目录)</p>
+<p>可以清除旧的log</p>
+<pre><code class="bash">find . -regex &quot;.*\.log\.[0-9]*&quot; -print0 | xargs -0 -I {} rm '{}'
+</code></pre>
+
+<h1 id="nodejs-yarn">nodejs &amp; yarn</h1>
+<pre><code class="bash">nvm install v6.9.5
+node -v
+</code></pre>
+
+<p>多个node环境 需要手动切换v6.9.5</p>
+<pre><code class="bash">nvm alias default v6.9.5
+nvm use v6.9.5
+npm install -g cnpm yarn
+</code></pre>
+
+<h1 id="_2">数据库迁移</h1>
+<pre><code class="bash"># 拷贝原始数据到当前部署的RDS
+mysqldump ... &gt; jingli_knowledge_20190213.sql
+mysql -h lizcloud4c.chnh6yhldzwc.rds.cn-north-1.amazonaws.com.cn -u root -p
+create database jingli_knowledge;
+mysql -h lizcloud4c.chnh6yhldzwc.rds.cn-north-1.amazonaws.com.cn -u root jingli_knowledge -p &lt; jingli_knowledge_20190213.sql
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../opensearch/" class="btn btn-neutral float-right" title="opensearch">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Platform/" class="btn btn-neutral" title="运行环境"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../Platform/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../opensearch/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
