@@ -70,10 +70,10 @@
     <li class="toctree-l2"><a href="#nvm">nvm</a></li>
     
 
-    <li class="toctree-l2"><a href="#_1">拷贝线上服务的所有文件到当前部署的主机</a></li>
+    <li class="toctree-l2"><a href="#nodejs-yarn">nodejs &amp; yarn</a></li>
     
 
-    <li class="toctree-l2"><a href="#nodejs-yarn">nodejs &amp; yarn</a></li>
+    <li class="toctree-l2"><a href="#_1">拷贝线上服务的所有文件到当前部署的主机</a></li>
     
 
     <li class="toctree-l2"><a href="#_2">数据库迁移</a></li>
@@ -161,26 +161,28 @@ systemctl enable redis
 cd /home/works &amp;&amp; su works
 </code></pre>
 
+<blockquote>
 <p>之后的应用服务必须放在/home/works下 否则需要从代码中修改路径</p>
+</blockquote>
 <h1 id="nvm">nvm</h1>
 <pre><code class="bash">wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash
+</code></pre>
+
+<h1 id="nodejs-yarn">nodejs &amp; yarn</h1>
+<pre><code class="bash">nvm install v6.9.5
+node -v
+npm install -g cnpm yarn
+</code></pre>
+
+<p>多个node环境 需要手动切换v6.9.5</p>
+<pre><code class="bash">nvm alias default v6.9.5
+nvm use v6.9.5
 </code></pre>
 
 <h1 id="_1">拷贝线上服务的所有文件到当前部署的主机</h1>
 <p>(/home/works目录)</p>
 <p>可以清除旧的log</p>
 <pre><code class="bash">find . -regex &quot;.*\.log\.[0-9]*&quot; -print0 | xargs -0 -I {} rm '{}'
-</code></pre>
-
-<h1 id="nodejs-yarn">nodejs &amp; yarn</h1>
-<pre><code class="bash">nvm install v6.9.5
-node -v
-</code></pre>
-
-<p>多个node环境 需要手动切换v6.9.5</p>
-<pre><code class="bash">nvm alias default v6.9.5
-nvm use v6.9.5
-npm install -g cnpm yarn
 </code></pre>
 
 <h1 id="_2">数据库迁移</h1>

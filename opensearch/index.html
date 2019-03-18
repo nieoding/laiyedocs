@@ -77,6 +77,8 @@
         
             <li><a class="toctree-l3" href="#jingli_question">jingli_question</a></li>
         
+            <li><a class="toctree-l3" href="#_1">搜索结果飘红展示</a></li>
+        
         </ul>
     
 
@@ -143,9 +145,11 @@ aws:
 </code></pre>
 
 <h1 id="opensearch">创建opensearch应用</h1>
-<p>参考:
-<a href="https://help.aliyun.com/document_detail/29119.html?spm=5176.7946605.1326713.4.70628b6cydTDZx">https://help.aliyun.com/document_detail/29119.html?spm=5176.7946605.1326713.4.70628b6cydTDZx</a>
-注意: 区域要和RDS相同 选择高级版 入门型每个区域只能申请两个</p>
+<p>参考:</p>
+<p><a href="https://help.aliyun.com/document_detail/29119.html?spm=5176.7946605.1326713.4.70628b6cydTDZx">https://help.aliyun.com/document_detail/29119.html?spm=5176.7946605.1326713.4.70628b6cydTDZx</a></p>
+<blockquote>
+<p>注意: 区域要和RDS相同 选择高级版 入门型每个区域只能申请两个</p>
+</blockquote>
 <h1 id="rds_1">添加RDS数据源配置</h1>
 <h2 id="jingli_knowledge_answer">jingli_knowledge_answer</h2>
 <p>提供答案和标题的匹配搜索api</p>
@@ -171,18 +175,14 @@ aws:
 <p><img alt="img" src="../org-img/screenshot_2019-03-14_17-58-15.png" /></p>
 <p>数据源信息</p>
 <p><img alt="img" src="../org-img/screenshot_2019-03-14_18-00-01.png" /></p>
-<ol>
-<li>
-<p>搜索结果飘红展示</p>
+<h2 id="_1">搜索结果飘红展示</h2>
 <p><img alt="img" src="../org-img/screenshot_2019-03-14_18-02-36.png" /></p>
-</li>
-</ol>
 <blockquote>
 <p>注意: 配置时字段名必须和示例完全一致</p>
 </blockquote>
 <h1 id="access-key">申请access key配置到服务中</h1>
 <ul>
-<li>shanghai (gemii账号)</li>
+<li>opensearch-shanghai (gemii账号)</li>
 </ul>
 <pre><code>&gt; host:
 &gt; opensearch-cn-shanghai.aliyuncs.com
@@ -193,7 +193,7 @@ aws:
 </code></pre>
 
 <ul>
-<li>beijing (laiye账号)</li>
+<li>opensearch-beijing (laiye账号)</li>
 </ul>
 <pre><code>&gt; host:
 &gt; opensearch-cn-beijing.aliyuncs.com
