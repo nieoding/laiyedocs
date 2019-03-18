@@ -42,12 +42,27 @@ useradd -m works
 cd /home/works && su works
 ```
 
-之后的应用服务必须放在/home/works下 否则需要从代码中修改路径
+> 之后的应用服务必须放在/home/works下 否则需要从代码中修改路径
 
 # nvm
 
 ``` bash
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash
+```
+
+# nodejs & yarn
+
+``` bash
+nvm install v6.9.5
+node -v
+npm install -g cnpm yarn
+```
+
+多个node环境 需要手动切换v6.9.5
+
+``` bash
+nvm alias default v6.9.5
+nvm use v6.9.5
 ```
 
 # 拷贝线上服务的所有文件到当前部署的主机
@@ -58,21 +73,6 @@ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | 
 
 ``` bash
 find . -regex ".*\.log\.[0-9]*" -print0 | xargs -0 -I {} rm '{}'
-```
-
-# nodejs & yarn
-
-``` bash
-nvm install v6.9.5
-node -v
-```
-
-多个node环境 需要手动切换v6.9.5
-
-``` bash
-nvm alias default v6.9.5
-nvm use v6.9.5
-npm install -g cnpm yarn
 ```
 
 # 数据库迁移

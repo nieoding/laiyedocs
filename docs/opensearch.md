@@ -18,8 +18,10 @@ aws:
 # 创建opensearch应用
 
 参考:
+
 <https://help.aliyun.com/document_detail/29119.html?spm=5176.7946605.1326713.4.70628b6cydTDZx>
-注意: 区域要和RDS相同 选择高级版 入门型每个区域只能申请两个
+
+> 注意: 区域要和RDS相同 选择高级版 入门型每个区域只能申请两个
 
 # 添加RDS数据源配置
 
@@ -71,15 +73,15 @@ aws:
 
 ![img](org-img/screenshot_2019-03-14_18-00-01.png)
 
-3.  搜索结果飘红展示
-    
-    ![img](org-img/screenshot_2019-03-14_18-02-36.png)
+## 搜索结果飘红展示
+
+![img](org-img/screenshot_2019-03-14_18-02-36.png)
 
 > 注意: 配置时字段名必须和示例完全一致
 
 # 申请access key配置到服务中
 
--   shanghai (gemii账号)
+-   opensearch-shanghai (gemii账号)
 
 ```
 > host:
@@ -90,7 +92,7 @@ aws:
 > x1VjJtlEJRNTkz1QbA7Z8ieDWJkUOX
 ```
 
--   beijing (laiye账号)
+-   opensearch-beijing (laiye账号)
 
 ```
 > host:

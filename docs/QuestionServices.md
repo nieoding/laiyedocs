@@ -1,7 +1,8 @@
 智能问答系统采用检索+排序架构实现问题和候选知识点的语义匹配，其架构示意图及各个模块功能描述如下。
-<图>
 
-各服务必须使用名为works的用户
+![img](org-img/q.png)
+
+> 注意: 各服务必须使用名为works的用户
 
 # 索引服务
 
@@ -31,12 +32,12 @@ supervisorctl -c config/sup.kb_es_node.conf        # 查看状态
 `/home/works/online-services/qa-search`
 
 项目的检索+排序过程都封装在这个模块中。
-检索:该模块的输入是问题文本，它调用检索服务后，根据业务需求做必要的处理，返回候选回复集合。
+检索:接收问题文本，它调用检索服务后，根据业务需求做必要的处理，返回候选回复集合。
 具体功能包括：对输入的问题做分词、词性过滤、同义词变换并构造ES检索表达式调用ES检索，同时对召回结果进行去重等操作。
-该模块为问答系统内部服务，是Python开发的web service，供内部访问,不对外提供服务接口。
+该模块是问答系统内部服务,Python开发的web service,供内部访问,不对外提供服务接口。
 排序:该模块负责对由检索模块初步召回的候选回复集合做重排序，排序的主要依据是问题与候选知识点的语义相关性。
 
-该模块由virtualenv提供隔离运行环境，且通过supervisor进行守护。所以，需要先激活virtualenv环境并安装好该模块依赖的第三方packages才能正常启动。
+该模块由virtualenv提供隔离运行环境，且通过supervisor进行守护。需要先激活virtualenv环境并安装好该模块依赖的第三方packages才能正常启动。
 
 - 配置
 
@@ -90,8 +91,9 @@ supervisorctl -c conf/sup.qsearch.conf        # 查看状态
 # 问答接口模块
 
 `/home/works/online-services/qa-coapi-jingli`
-该模块提供对外接口服务，具体功能包括：用户鉴权，输入校验，调用检索/排序模块，生成topN条候选回复，按接口文档格式打包返回给调用方。该模块是Python开发的web service，调用内部服务，对外提供HTTP方式的访问接口。
-该模块由virtualenv提供隔离运行环境，且通过supervisor进行守护。所以，需要先激活virtualenv环境并安装好该模块依赖的第三方packages才能正常启动。
+
+该模块提供对外接口服务，是Python开发的web service，具体功能包括：用户鉴权，输入校验，调用检索/排序模块，生成topN条候选回复，按接口文档格式打包返回给调用方。
+该模块由virtualenv提供隔离运行环境，且通过supervisor进行守护。需要先激活virtualenv环境并安装好该模块依赖的第三方packages才能正常启动。
 
 - 配置
 
@@ -151,9 +153,9 @@ supervisorctl -c conf/sup.qa_coapi.conf        # 查看状态
 
 `/home/works/online-services/qa-gemmi-stats`
 
-该模块负责统计挖掘高频但未成功召回的知识点，并为其推荐相关的知识点，推荐结果供管理人员审核。此外，问答系统接口相关的统计脚本（如接口调用次数、召回率）也由该模块实现。
+该模块是Python开发的脚本，完成知识点推荐、接口数据统计等离线需求,具体负责统计挖掘高频但未成功召回的知识点，并为其推荐相关的知识点，推荐结果供管理人员审核。此外，问答系统接口相关的统计脚本（如接口调用次数、召回率）也由该模块实现。
 
-该模块是Python开发的脚本，完成知识点推荐、接口数据统计等离线需求,模块由virtualenv提供隔离运行环境,通过crontab定时运行(运行频率：1次/天).在works帐号的crontab任务列表里添加如下配置(每天早上05:01执行1次):
+模块由virtualenv提供隔离运行环境,通过crontab定时运行(运行频率：1次/天).
 
 - 配置
 
@@ -176,6 +178,8 @@ database="jingli_knowledge"
 ```
 
 - 自启动
+
+在works帐号的crontab任务列表里添加如下配置(每天早上05:01执行1次):
 
 ``` bash
 crontab -e
